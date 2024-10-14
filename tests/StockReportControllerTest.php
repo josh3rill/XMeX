@@ -18,6 +18,7 @@ class StockReportControllerTest extends TestCase
 
         foreach ($stockSymbols as $symbol) {
             $data = [
+                
                 'symbol' => $symbol,
                 'close' => 150,
                 'previous_close' => 145,

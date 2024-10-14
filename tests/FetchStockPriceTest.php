@@ -17,6 +17,7 @@ class FetchStockPriceTest extends TestCase
 
     public function testHandleSuccess()
     {
+        
         $symbol = 'AAPL';
         $data = [
             'symbol' => $symbol,

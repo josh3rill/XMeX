@@ -25,7 +25,12 @@ services:
     networks:
       - laravel
       - app-shared
-      
+    command: >
+      sh -c "
+      composer install &&
+      php artisan migrate --seed &&
+      php artisan serve --host=0.0.0.0 --port=80
+      " 
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

@@ -18,6 +18,7 @@ class StockControllerTest extends TestCase
 
     protected function setUp(): void
     {
+        
         parent::setUp();
         $this->stockRepository = $this->createMock(StockRepositoryInterface::class);
         $this->app->instance(StockRepositoryInterface::class, $this->stockRepository);
