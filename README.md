@@ -57,14 +57,6 @@ This project was initialized with Docker. Follow the steps below to set up and r
    php artisan db:seed --class=StockSymbolsSeeder
    ```
 
-### Handling Scheduler Issues
-
-In case the scheduler running in Docker does not update the database due to key restrictions, manually run the following commands in the terminal:
-
-```sh
-php artisan stocks:fetch
-php artisan cache:update
-```
 
 ### API Endpoint
 
