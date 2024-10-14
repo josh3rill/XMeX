@@ -20,6 +20,9 @@ RUN mkdir -p /usr/src/php/ext/redis \
 COPY . /var/www/html
 COPY wait-for-it.sh /usr/local/bin/wait-for-it.sh
 
+# Ensure the script has execute permissions
+RUN chmod +x /usr/local/bin/wait-for-it.sh
+
 RUN composer install && \
     php artisan migrate --seed && \
     php artisan db:seed --class=StockSymbolsSeeder && \
