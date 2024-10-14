@@ -1,16 +1,25 @@
-
+version: '3.8'
 
 networks:
   laravel:
-  app-shared:
-    driver: bridge 
-
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: "laravel_bridge"
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.28.0.0/16"
+          gateway: "172.28.0.1"
+        - subnet: "fd00:dead:beef::/48"
+          gateway: "fd00:dead:beef::1"
+    enable_ipv6: true
+    internal: false
 services:
   app:
     container_name: XMex
     build:
-      context: ./dockerfiles
-      dockerfile: nginx.dockerfile
+      context: .
+      dockerfile: dockerfiles/nginx.dockerfile
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
@@ -24,14 +33,8 @@ services:
       - redis
     networks:
       - laravel
-      - app-shared
-    command: >
-      sh -c "
-      composer install &&
-      php artisan migrate --seed &&
-      php artisan serve --host=0.0.0.0 --port=80
-      " 
-
+    
+   
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin_XMex
@@ -52,8 +55,6 @@ services:
     networks:
       - laravel
       
-    
-
   mysql:
     image: mariadb:10.6
     container_name: mysql_XMex
@@ -61,6 +62,8 @@ services:
     tty: true
     ports:
       - "3306:3306"
+    volumes:
+      - ./my.cnf:/etc/mysql/my.cnf  
     env_file:
       - ".env"
     environment:
@@ -77,8 +80,8 @@ services:
   php:
     container_name: php_XMex
     build:
-      context: ./dockerfiles
-      dockerfile: php.dockerfile
+      context: .
+      dockerfile: dockerfiles/php.dockerfile
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
@@ -88,19 +91,26 @@ services:
       - ./:/var/www/html:delegated
     networks:
       - laravel
-      - app-shared
+    command: >
+      sh -c "
+      /usr/local/bin/wait-for-it.sh mysql:3306 --timeout=60 -- \
+      composer install && \
+      php artisan migrate --seed && \
+      php artisan db:seed --class=StockSymbolsSeeder && \
+      php artisan stocks:fetch && \
+      php artisan cache:update
+      "
 
   scheduler:
     build:
-      context: ./dockerfiles
-      dockerfile: php.root.dockerfile
+      context: .
+      dockerfile: dockerfiles/php.root.dockerfile
     container_name: scheduler_XMex
     volumes:
       - .:/var/www/html
     depends_on:
       - app
     entrypoint: ["sh", "-c", "while true; do php artisan schedule:run; sleep 60; done"]
-    
     networks:
       - laravel
 
@@ -116,8 +126,8 @@ services:
   composer:
     container_name: composer_XMex
     build:
-      context: ./dockerfiles
-      dockerfile: php.dockerfile
+      context: .
+      dockerfile: dockerfiles/php.dockerfile
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
@@ -132,8 +142,8 @@ services:
   artisan:
     container_name: artisan_XMex
     build:
-      context: ./dockerfiles
-      dockerfile: php.dockerfile
+      context: .
+      dockerfile: dockerfiles/php.dockerfile
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
@@ -141,65 +151,10 @@ services:
       - ./:/var/www/html:delegated
     depends_on:
       - mysql
-    entrypoint: [ 'php', '/var/www/html/artisan' ]
+    entrypoint: >
+      sh -c "
+      /usr/local/bin/wait-for-it.sh mysql:3306 -- \
+      php /var/www/html/artisan
+      "
     networks:
       - laravel
-     
-  # mailhog:
-  #   container_name: mailhog_micro1
-  #   image: mailhog/mailhog:latest
-  #   ports:
-  #     - "1025:1025"
-  #     - "8025:8025"
-  #   networks:
-  #     - laravel
-     
-
-#   prometheus:
-#     image: prom/prometheus:latest
-#     container_name: prometheus_micro1
-#     volumes:
-#       - ./prometheus:/etc/prometheus
-#     ports:
-#       - "9090:9090"
-#     networks:
-#       - app-shared
-#       - laravel  
-#     command:
-#       - "--config.file=/etc/prometheus/prometheus.yml"
-
-#   grafana:
-#     image: grafana/grafana:latest
-#     container_name: grafana_micro1
-#     ports:
-#       - "3000:3000"
-#     environment:
-#       - GF_SECURITY_ADMIN_USER=admin
-#       - GF_SECURITY_ADMIN_PASSWORD=admin
-#     volumes:
-#       - grafana_data:/var/lib/grafana
-#     networks:
-#       - app-shared
-#       - laravel 
-
-
-# volumes:
-#   grafana_data: {}
-
-
-
-
-
-
-     # npm:
-  #   image: node:current-alpine
-  #   volumes:
-  #     - ./src:/var/www/html
-  #   ports:
-  #     - "3000:3000"
-  #     - "3001:3001"
-  #     - "5173:5173"
-  #   working_dir: /var/www/html
-  #   entrypoint: [ 'npm' ]
-  #   networks:
-  #     - laravel
