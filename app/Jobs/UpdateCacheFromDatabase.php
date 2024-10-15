@@ -14,7 +14,6 @@ use Illuminate\Queue\SerializesModels;
 class UpdateCacheFromDatabase implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
     protected $symbol;
 
     public function __construct($symbol)
