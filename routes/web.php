@@ -5,4 +5,4 @@ use App\Http\Controllers\StockReportController;
 
 // Route::get('/', function () { return view('welcome');});
 
-Route::get('/', [StockReportController::class, 'index']);
+ Route::get('/', [StockReportController::class, 'index']);
