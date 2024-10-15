@@ -16,19 +16,7 @@ RUN mkdir -p /usr/src/php/ext/redis \
     && curl -L https://github.com/phpredis/phpredis/archive/5.3.4.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
     && echo 'redis' >> /usr/src/php-available-exts \
     && docker-php-ext-install redis
-
-COPY . /var/www/html
-COPY wait-for-it.sh /usr/local/bin/wait-for-it.sh
-
-# Ensure the script has execute permissions
-RUN chmod +x /usr/local/bin/wait-for-it.sh
-
-RUN composer install && \
-    php artisan migrate --seed && \
-    php artisan db:seed --class=StockSymbolsSeeder && \
-    php artisan stocks:fetch && \
-    php artisan cache:update
-
+    
 USER root
 
 CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
