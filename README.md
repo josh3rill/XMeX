@@ -15,8 +15,8 @@ This project was initialized with Docker. Follow the steps below to set up and r
 1. **Clone the Repository**
 
    ```sh
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone <https://github.com/josh3rill/XMeX.git>
+   cd <XMeX>
    ```
 
 2. **Build and Run Docker Containers**
