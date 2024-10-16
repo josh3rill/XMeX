@@ -3,34 +3,23 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Jobs\UpdateCacheFromDatabase;
-use Illuminate\Support\Facades\Log;
+use App\Services\UpdateCacheService;
 
 class UpdateCacheCommand extends Command
 {
     protected $signature = 'cache:update';
     protected $description = 'Update Cache From Database';
 
-    public function __construct()
+    protected $updateCacheService;
+
+    public function __construct(UpdateCacheService $updateCacheService)
     {
         parent::__construct();
+        $this->updateCacheService = $updateCacheService;
     }
 
     public function handle()
     {
-        // TODO: Implement the logic to FETCH $stockSymbols from database or Json
-        $stockSymbols = ["AAPL", "GOOGL", "GOOG", "MSFT", "AMZN", "TSLA", "NVDA", "META", "JPM", "V"];
-        
-        try {
-            foreach ($stockSymbols as $symbol) {
-                UpdateCacheFromDatabase::dispatch($symbol);
-                $this->info("Dispatched job for symbol: {$symbol}"); // Debugging statement
-            }
-
-            $this->info('Cache update jobs dispatched successfully.');
-        } catch (\Exception $e) {
-            Log::error('Failed to dispatch cache update jobs: ' . $e->getMessage());
-            $this->error('Failed to dispatch cache update jobs. Check logs for details.');
-        }
+        $this->updateCacheService->updateAllCaches();
     }
 }
