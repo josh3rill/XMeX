@@ -18,7 +18,7 @@ class UpdateCacheService
             }
             Log::info('Cache update completed successfully.');
         } catch (\Exception $e) {
-            Log::error('Failed to update cache: '.$e->getMessage());
+            Log::error('Failed to update cache: ' . $e->getMessage());
         }
     }
 
@@ -36,7 +36,7 @@ class UpdateCacheService
                 Log::warning("No data found for symbol: {$symbol}"); // Debugging statement
             }
         } catch (\Exception $e) {
-            Log::error("Failed to update cache for symbol: {$symbol}. Error: ".$e->getMessage());
+            Log::error("Failed to update cache for symbol: {$symbol}. Error: " . $e->getMessage());
         }
     }
 }

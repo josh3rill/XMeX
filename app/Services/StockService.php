@@ -13,7 +13,7 @@ class StockService
         try {
             return $stockRepository->getAllStocks();
         } catch (\Exception $e) {
-            Log::error('Failed to fetch all stocks: '.$e->getMessage());
+            Log::error('Failed to fetch all stocks: ' . $e->getMessage());
             throw new \Exception('Failed to fetch all stocks');
         }
     }
@@ -33,7 +33,7 @@ class StockService
                 'timestamp' => $latestStock ? $latestStock->timestamp : null,
             ];
         } catch (\Exception $e) {
-            Log::error("Failed to fetch stock data for symbol: {$symbol}. Error: ".$e->getMessage());
+            Log::error("Failed to fetch stock data for symbol: {$symbol}. Error: " . $e->getMessage());
             throw new \Exception('Failed to fetch stock data');
         }
     }
