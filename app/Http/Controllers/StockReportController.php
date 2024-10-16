@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Models\Stock;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class StockReportController extends Controller
 {
@@ -28,7 +29,8 @@ class StockReportController extends Controller
                         'price' => $data['close'],
                         'previous_close' => $data['previous_close'],
                         'percentage_change' => $this->calculatePercentageChange($data['close'], $data['previous_close']),
-                        'timestamp' => $data['timestamp'],
+                        'timestamp' => Carbon::parse($data['timestamp'])->format('Y-m-d H:i:s'),
+                   
                     ];
                 }
             } catch (\Exception $e) {
