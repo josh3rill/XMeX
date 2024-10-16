@@ -36,7 +36,7 @@ class FetchStockPrice implements ShouldQueue
                 Log::warning("No data returned for symbol: {$this->symbol}");
             }
         } catch (\Exception $e) {
-            Log::error("Failed to fetch stock price for symbol: {$this->symbol}. Error: " . $e->getMessage());
+            Log::error("Failed to fetch stock price for symbol: {$this->symbol}. Error: ".$e->getMessage());
         }
     }
 }
