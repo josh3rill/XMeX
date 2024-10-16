@@ -15,8 +15,8 @@ This project was initialized with Docker. Follow the steps below to set up and r
 1. **Clone the Repository**
 
    ```sh
-   git clone <https://github.com/josh3rill/XMeX.git>
-   cd <XMeX>
+   git clone https://github.com/josh3rill/XMeX.git
+   cd XMeX
    ```
 
 2. **Build and Run Docker Containers**
@@ -37,24 +37,18 @@ This project was initialized with Docker. Follow the steps below to set up and r
    After a successful build, access the Docker container named `php_XMex`:
 
    ```sh
-   docker exec -it php_XMex bash
+   docker exec -it php_XMex /bin/sh
    ```
 
-4. **Install Composer Dependencies**
+4.
 
-   Inside the Docker container, run:
+5. **Run startup script**
 
-   ```sh
-   composer install
-   ```
-
-5. **Run Migrations and Seeders**
-
-   Run the following commands to set up the database:
+   Run the following commands to configure env of laravel:
 
    ```sh
-   php artisan migrate --seed
-   php artisan db:seed --class=StockSymbolsSeeder
+   php artisan app:startup
+   
    ```
 
 
@@ -74,14 +68,6 @@ For users to view the stock data in a GUI, the project uses Livewire to update t
 https://localhost:8082
 ```
 
-### Summary
 
-- **Clone the repository** and navigate to the project directory.
-- **Build and run Docker containers** using `docker-compose up --build`.
-- **Access the Docker container** and run `composer install`.
-- **Run migrations and seeders** using `php artisan migrate --seed` and `php artisan db:seed --class=StockSymbolsSeeder`.
-- **Manually run commands** if the scheduler does not update the database: `php artisan stocks:fetch` and `php artisan cache:update`.
-- **Access the API endpoint** at `https://localhost:8082/api/v1/stock`.
-- **View the GUI** at `https://localhost:8082`.
 
 By following these steps, you can set up and run the project successfully.
