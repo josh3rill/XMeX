@@ -10,7 +10,8 @@ class FetchStockPricesCommand extends Command
 {
     protected $signature = 'stocks:fetch';
     protected $description = 'Fetch stock prices for predefined symbols and store in database';
-
+   
+    // TODO: Implement the logic to FETCH $stockSymbols from database
     protected $stockSymbols = ["AAPL", "GOOGL", "GOOG", "MSFT", "AMZN", "TSLA", "NVDA", "META", "JPM", "V"];
 
     public function __construct()

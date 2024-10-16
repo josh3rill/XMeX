@@ -16,6 +16,7 @@ class StockSymbolsSeeder extends Seeder
      */
     public function run()
     {
+        // TODO: Implement the logic to FETCH $stockSymbols from database
         $stockSymbols = [
             "AAPL", "GOOGL", "GOOG", "MSFT", "AMZN", "TSLA", "NVDA", "META", "JPM", "V"
         ];

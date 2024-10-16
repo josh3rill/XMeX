@@ -18,6 +18,7 @@ class UpdateCacheCommand extends Command
 
     public function handle()
     {
+        // TODO: Implement the logic to FETCH $stockSymbols from database
         $stockSymbols = ["AAPL", "GOOGL", "GOOG", "MSFT", "AMZN", "TSLA", "NVDA", "META", "JPM", "V"];
         
         try {
