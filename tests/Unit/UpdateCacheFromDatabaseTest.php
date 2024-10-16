@@ -16,7 +16,6 @@ class UpdateCacheFromDatabaseTest extends TestCase
 
     public function testHandleSuccess()
     {
-
         $symbol = 'AAPL';
         $stock = Stock::factory()->create(['symbol' => $symbol, 'close' => 150, 'timestamp' => now()]);
 
