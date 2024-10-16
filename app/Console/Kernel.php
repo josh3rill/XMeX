@@ -5,27 +5,25 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+    protected $commands = [
+        StartupCommand::class,
+        FetchStockPricesCommand::class,
+        UpdateCacheCommand::class,
+
+    ];
     protected function schedule(Schedule $schedule)
     {
-        try {
-            // Schedule the job to fetch data from the API and store it in the database daily
-            $schedule->command('demo:run')->everyMinute()->timezone('Europe/Malta');
+        $schedule->command('inspire')
+            ->everyMinute()
+            ->appendOutputTo(storage_path('logs/inspire.log'));
 
-            if (isset($stockSymbols) && is_array($stockSymbols)) {
-                foreach ($stockSymbols as $symbol) {
-                    $schedule->command('stocks:fetch')->daily()->timezone('Europe/Malta');
-                }
+        $schedule->command('update:cache')
+            ->everyMinute()
+            ->appendOutputTo(storage_path('logs/update_cache.log'));
 
-                // Schedule the job to update the cache from the database every minute
-                foreach ($stockSymbols as $symbol) {
-                    $schedule->command('cache:update')->everyMinute()->timezone('Europe/Malta');
-                }
-            } else {
-                Log::error('Stock symbols are not defined or not an array.');
-            }
-        } catch (\Exception $e) {
-            Log::error('Error scheduling commands: ' . $e->getMessage());
-        }
+        $schedule->command('fetch:stockprice')
+            ->dailyAt('00:00')
+            ->appendOutputTo(storage_path('logs/fetch_stockprice.log'));
     }
 
     protected function commands()
