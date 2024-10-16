@@ -1,4 +1,8 @@
+
 #!/bin/sh
+
+# Install Composer dependencies
+composer install
 
 # Run database migrations and seeders
 php artisan migrate --seed
