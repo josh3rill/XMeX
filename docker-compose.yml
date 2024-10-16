@@ -80,25 +80,25 @@ services:
       - laravel
     
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin_XMex
-    ports:
-      - "8070:80"
-    env_file:
-      - ".env"
-    environment:
-      - PMA_ARBITRARY=1
-      - PMA_HOST=mysql
-      - PMA_PORT=3306
-      - PMA_USER=root
-      - PMA_PASSWORD=root
-      - MYSQL_ROOT_PASSWORD=root
-    restart: always
-    depends_on:
-      - mysql
-    networks:
-      - laravel
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin
+  #   container_name: phpmyadmin_XMex
+  #   ports:
+  #     - "8070:80"
+  #   env_file:
+  #     - ".env"
+  #   environment:
+  #     - PMA_ARBITRARY=1
+  #     - PMA_HOST=mysql
+  #     - PMA_PORT=3306
+  #     - PMA_USER=root
+  #     - PMA_PASSWORD=root
+  #     - MYSQL_ROOT_PASSWORD=root
+  #   restart: always
+  #   depends_on:
+  #     - mysql
+  #   networks:
+  #     - laravel
 
   redis:
     container_name: redis_XMex
