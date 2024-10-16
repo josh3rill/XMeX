@@ -2,13 +2,12 @@
 
 namespace Tests;
 
+use App\Jobs\FetchStockPrice;
 use App\Models\Stock;
 use App\Repositories\StockRepositoryInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;
-use Tests\TestCase;
-use App\Jobs\FetchStockPrice;
 
 class StockControllerTest extends TestCase
 {
@@ -18,7 +17,7 @@ class StockControllerTest extends TestCase
 
     protected function setUp(): void
     {
-        
+
         parent::setUp();
         $this->stockRepository = $this->createMock(StockRepositoryInterface::class);
         $this->app->instance(StockRepositoryInterface::class, $this->stockRepository);
@@ -32,7 +31,7 @@ class StockControllerTest extends TestCase
         $response = $this->getJson('/api/v1/stocks');
 
         $response->assertStatus(200)
-                 ->assertJsonCount(3);
+            ->assertJsonCount(3);
     }
 
     public function testShow()
@@ -54,12 +53,12 @@ class StockControllerTest extends TestCase
         });
 
         $response->assertStatus(200)
-                 ->assertJson([
-                     'symbol' => $symbol,
-                     'price' => 150,
-                     'percentage_change' => 3.45,
-                     'timestamp' => $latestStock->timestamp->toDateTimeString(),
-                 ]);
+            ->assertJson([
+                'symbol' => $symbol,
+                'price' => 150,
+                'percentage_change' => 3.45,
+                'timestamp' => $latestStock->timestamp->toDateTimeString(),
+            ]);
     }
 
     public function testShowNoData()
@@ -79,11 +78,11 @@ class StockControllerTest extends TestCase
         });
 
         $response->assertStatus(200)
-                 ->assertJson([
-                     'symbol' => $symbol,
-                     'price' => 'Price not available',
-                     'percentage_change' => 0,
-                     'timestamp' => null,
-                 ]);
+            ->assertJson([
+                'symbol' => $symbol,
+                'price' => 'Price not available',
+                'percentage_change' => 0,
+                'timestamp' => null,
+            ]);
     }
 }
