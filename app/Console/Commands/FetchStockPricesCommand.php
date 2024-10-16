@@ -3,33 +3,23 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Jobs\FetchStockPrice;
-use Illuminate\Support\Facades\Log;
+use App\Services\FetchStockPriceService;
 
 class FetchStockPricesCommand extends Command
 {
     protected $signature = 'stocks:fetch';
     protected $description = 'Fetch stock prices for predefined symbols and store in database';
-   
-    // TODO: Implement the logic to FETCH $stockSymbols from database
-    protected $stockSymbols = ["AAPL", "GOOGL", "GOOG", "MSFT", "AMZN", "TSLA", "NVDA", "META", "JPM", "V"];
 
-    public function __construct()
+    protected $fetchStockPriceService;
+
+    public function __construct(FetchStockPriceService $fetchStockPriceService)
     {
         parent::__construct();
+        $this->fetchStockPriceService = $fetchStockPriceService;
     }
 
     public function handle()
     {
-        try {
-            foreach ($this->stockSymbols as $symbol) {
-                FetchStockPrice::dispatch($symbol);
-            }
-
-            $this->info('Stock prices fetching jobs dispatched successfully.');
-        } catch (\Exception $e) {
-            Log::error('Failed to dispatch stock price fetching jobs: ' . $e->getMessage());
-            $this->error('Failed to dispatch stock price fetching jobs. Check logs for details.');
-        }
+        $this->fetchStockPriceService->fetchAllStockPrices();
     }
 }
