@@ -22,11 +22,11 @@ return new class extends Migration
             $table->decimal('previous_close', 15, 6)->nullable(); // Previous close price
             $table->bigInteger('volume'); // Trading volume
             $table->timestamps(); // Laravel timestamps (created_at, updated_at)
-            
+
             // Add a unique constraint to prevent duplicate entries for the same symbol and timestamp
             $table->unique(['symbol', 'timestamp']);
         });
-        
+
     }
 
     /**
@@ -37,8 +37,3 @@ return new class extends Migration
         Schema::dropIfExists('stocks');
     }
 };
-
-
-
-
-
