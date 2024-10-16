@@ -3,13 +3,13 @@
 namespace App\Jobs;
 
 use App\Models\Stock;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class UpdateCacheFromDatabase implements ShouldQueue
 {
@@ -36,7 +36,7 @@ class UpdateCacheFromDatabase implements ShouldQueue
                 Log::warning("No data found for symbol: {$this->symbol}"); // Debugging statement
             }
         } catch (\Exception $e) {
-            Log::error("Failed to update cache for symbol: {$this->symbol}. Error: " . $e->getMessage());
+            Log::error("Failed to update cache for symbol: {$this->symbol}. Error: ".$e->getMessage());
         }
     }
 }
