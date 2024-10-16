@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 networks:
   laravel:
@@ -48,7 +48,7 @@ services:
       - laravel
     expose:
       - "9000"
-    entrypoint: ["/usr/local/bin/startup.sh"]
+    # entrypoint: ["/usr/local/bin/startup.sh"]
     # command: >
     #   sh -c "
     #   /usr/local/bin/wait-for-it.sh mysql:3306 --timeout=60 -- \
@@ -118,7 +118,7 @@ services:
       - .:/var/www/html
     depends_on:
       - nginx
-    entrypoint: ["sh", "-c", "while true; do php artisan schedule:run; sleep 60; done", "/usr/local/bin/startup.sh"]
+    entrypoint: ["sh", "-c", "while true; do php artisan schedule:run; sleep 60; done"]
     networks:
       - laravel
 
