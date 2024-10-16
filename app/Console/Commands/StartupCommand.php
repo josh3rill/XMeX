@@ -50,8 +50,9 @@ class StartupCommand extends Command
 
             $this->info('Startup commands executed successfully.');
         } catch (\Exception $e) {
-            Log::error('Error running startup commands: ' . $e->getMessage());
+            Log::error('Error running startup commands: '.$e->getMessage());
             $this->error('Error running startup commands. Check logs for details.');
+
             return 1;
         }
 
