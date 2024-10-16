@@ -24,6 +24,7 @@ class AlphaVantageService
 
         if ($response->successful()) {
             $data = $response->json();
+
             // Process the data as needed
             return $data;
         }
