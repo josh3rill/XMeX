@@ -15,8 +15,8 @@ This project was initialized with Docker. Follow the steps below to set up and r
 1. **Clone the Repository**
 
    ```sh
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone <https://github.com/josh3rill/XMeX.git>
+   cd <XMeX>
    ```
 
 2. **Build and Run Docker Containers**
@@ -29,10 +29,10 @@ This project was initialized with Docker. Follow the steps below to set up and r
 
 3. **Access the Docker Container**
 
-   After a successful build, access the Docker container named `EXme`:
+   After a successful build, access the Docker container named `php_XMex`:
 
    ```sh
-   docker exec -it EXme bash
+   docker exec -it php_XMex bash
    ```
 
 4. **Install Composer Dependencies**
