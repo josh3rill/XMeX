@@ -1,0 +1,200 @@
+
+
+networks:
+  laravel:
+  app-shared:
+    driver: bridge 
+
+services:
+  app:
+    container_name: XMex
+    build:
+      context: ./dockerfiles
+      dockerfile: nginx.dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    ports:
+      - "8082:80"
+    volumes:
+      - ./:/var/www/html:delegated
+    depends_on:
+      - php
+      - mysql
+      - redis
+    networks:
+      - laravel
+      - app-shared
+      
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_XMex
+    ports:
+      - "8070:80"
+    env_file:
+      - ".env"
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=root
+    restart: always
+    depends_on:
+      - mysql
+    networks:
+      - laravel
+      
+    
+
+  mysql:
+    image: mariadb:10.6
+    container_name: mysql_XMex
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    env_file:
+      - ".env"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_USER: ${MYSQL_ROOT_USER}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - laravel
+    
+  php:
+    container_name: php_XMex
+    build:
+      context: ./dockerfiles
+      dockerfile: php.dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./:/var/www/html:delegated
+    networks:
+      - laravel
+      - app-shared
+
+  scheduler:
+    build:
+      context: ./dockerfiles
+      dockerfile: php.root.dockerfile
+    container_name: scheduler_XMex
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - app
+    entrypoint: ["sh", "-c", "while true; do php artisan schedule:run; sleep 60; done"]
+    
+    networks:
+      - laravel
+
+  redis:
+    container_name: redis_XMex
+    image: redis:alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - laravel
+
+  composer:
+    container_name: composer_XMex
+    build:
+      context: ./dockerfiles
+      dockerfile: php.dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - php
+    entrypoint: [ 'composer', '--ignore-platform-reqs' ]
+    networks:
+      - laravel
+      
+  artisan:
+    container_name: artisan_XMex
+    build:
+      context: ./dockerfiles
+      dockerfile: php.dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    volumes:
+      - ./:/var/www/html:delegated
+    depends_on:
+      - mysql
+    entrypoint: [ 'php', '/var/www/html/artisan' ]
+    networks:
+      - laravel
+     
+  # mailhog:
+  #   container_name: mailhog_micro1
+  #   image: mailhog/mailhog:latest
+  #   ports:
+  #     - "1025:1025"
+  #     - "8025:8025"
+  #   networks:
+  #     - laravel
+     
+
+#   prometheus:
+#     image: prom/prometheus:latest
+#     container_name: prometheus_micro1
+#     volumes:
+#       - ./prometheus:/etc/prometheus
+#     ports:
+#       - "9090:9090"
+#     networks:
+#       - app-shared
+#       - laravel  
+#     command:
+#       - "--config.file=/etc/prometheus/prometheus.yml"
+
+#   grafana:
+#     image: grafana/grafana:latest
+#     container_name: grafana_micro1
+#     ports:
+#       - "3000:3000"
+#     environment:
+#       - GF_SECURITY_ADMIN_USER=admin
+#       - GF_SECURITY_ADMIN_PASSWORD=admin
+#     volumes:
+#       - grafana_data:/var/lib/grafana
+#     networks:
+#       - app-shared
+#       - laravel 
+
+
+# volumes:
+#   grafana_data: {}
+
+
+
+
+
+
+     # npm:
+  #   image: node:current-alpine
+  #   volumes:
+  #     - ./src:/var/www/html
+  #   ports:
+  #     - "3000:3000"
+  #     - "3001:3001"
+  #     - "5173:5173"
+  #   working_dir: /var/www/html
+  #   entrypoint: [ 'npm' ]
+  #   networks:
+  #     - laravel
