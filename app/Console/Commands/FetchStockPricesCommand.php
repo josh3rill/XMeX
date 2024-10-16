@@ -2,12 +2,13 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Services\FetchStockPriceService;
+use Illuminate\Console\Command;
 
 class FetchStockPricesCommand extends Command
 {
     protected $signature = 'stocks:fetch';
+
     protected $description = 'Fetch stock prices for predefined symbols and store in database';
 
     protected $fetchStockPriceService;
