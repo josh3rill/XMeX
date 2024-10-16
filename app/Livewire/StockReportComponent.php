@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
 use App\Http\Controllers\StockReportController;
+use Livewire\Component;
 
 class StockReportComponent extends Component
 {
@@ -13,7 +13,7 @@ class StockReportComponent extends Component
 
     public function __construct()
     {
-        $this->stockController = new StockReportController();
+        $this->stockController = new StockReportController;
     }
 
     public function mount()
@@ -29,7 +29,7 @@ class StockReportComponent extends Component
     public function render()
     {
         return view('livewire.stock-report', [
-            'report' => $this->report
+            'report' => $this->report,
         ]);
     }
 
