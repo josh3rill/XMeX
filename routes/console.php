@@ -5,15 +5,15 @@ use App\Console\Commands\FetchStockPricesCommand;
 use App\Console\Commands\UpdateCacheCommand;
 
 Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote')->everyFourMinutes();
+    $this->comment('update:cache');
+})->purpose('Display an inspiring quote')->everyMinute();
 
 Artisan::command('update:cache', function () {
-    $command = new UpdateCacheCommand();
+    $command = app(UpdateCacheCommand::class);
     $command->handle();
 })->purpose('Update Cache From Database')->everyMinute();
 
 Artisan::command('fetch:stockprice', function () {
-    $command = new FetchStockPricesCommand(app(App\Services\AlphaVantageService::class));
+    $command = app(FetchStockPricesCommand::class);
     $command->handle();
-})->purpose('Fetch Stock Price')->days('2');                                                                                                                                                                                                                                                                                                                                 
+})->purpose('Fetch Stock Price')->days('1');   
