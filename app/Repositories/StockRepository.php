@@ -16,6 +16,7 @@ class StockRepository implements StockRepositoryInterface
     public function getStockBySymbol($symbol)
     {
         $this->validateSymbol($symbol);
+
         return Stock::where('symbol', $symbol)->first();
     }
 
