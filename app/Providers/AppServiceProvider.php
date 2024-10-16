@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Repositories\StockRepositoryInterface;
 use App\Repositories\StockRepository;
 use Illuminate\Filesystem\Filesystem;
+use App\Services\AlphaVantageService;
 
 
 
@@ -20,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind('files', function ($app) {
             return new Filesystem();
+        });
+
+        $this->app->singleton(AlphaVantageService::class, function ($app) {
+            return new AlphaVantageService();
         });
 
     }
