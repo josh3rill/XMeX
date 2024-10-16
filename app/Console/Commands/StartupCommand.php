@@ -24,8 +24,6 @@ class StartupCommand extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -50,7 +48,7 @@ class StartupCommand extends Command
 
             $this->info('Startup commands executed successfully.');
         } catch (\Exception $e) {
-            Log::error('Error running startup commands: '.$e->getMessage());
+            Log::error('Error running startup commands: ' . $e->getMessage());
             $this->error('Error running startup commands. Check logs for details.');
 
             return 1;
