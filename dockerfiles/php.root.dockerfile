@@ -24,4 +24,4 @@ RUN composer install
 
 USER root
 
-CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
+CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"] 
