@@ -13,7 +13,7 @@ class StockReportComponent extends Component
 
     public function __construct()
     {
-        $this->stockController = new StockReportController;
+        $this->stockController = new StockReportController();
     }
 
     public function mount()

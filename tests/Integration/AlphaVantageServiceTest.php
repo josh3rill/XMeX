@@ -27,7 +27,7 @@ class AlphaVantageServiceTest extends TestCase
             ], 200),
         ]);
 
-        $service = new AlphaVantageService;
+        $service = new AlphaVantageService();
         $data = $service->getStockPrice('AAPL');
 
         $this->assertNotNull($data);
