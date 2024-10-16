@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 class UpdateCacheService
 {
-    protected $stockSymbols = ["AAPL", "GOOGL", "GOOG", "MSFT", "AMZN", "TSLA", "NVDA", "META", "JPM", "V"];
+    protected $stockSymbols = ['AAPL', 'GOOGL', 'GOOG', 'MSFT', 'AMZN', 'TSLA', 'NVDA', 'META', 'JPM', 'V'];
 
     public function updateAllCaches()
     {
@@ -18,7 +18,7 @@ class UpdateCacheService
             }
             Log::info('Cache update completed successfully.');
         } catch (\Exception $e) {
-            Log::error('Failed to update cache: ' . $e->getMessage());
+            Log::error('Failed to update cache: '.$e->getMessage());
         }
     }
 
@@ -36,7 +36,7 @@ class UpdateCacheService
                 Log::warning("No data found for symbol: {$symbol}"); // Debugging statement
             }
         } catch (\Exception $e) {
-            Log::error("Failed to update cache for symbol: {$symbol}. Error: " . $e->getMessage());
+            Log::error("Failed to update cache for symbol: {$symbol}. Error: ".$e->getMessage());
         }
     }
 }
