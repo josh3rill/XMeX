@@ -21,6 +21,7 @@ class AlphaVantageService
             'symbol' => $symbol,
             'interval' => '1min',
             'apikey' => $this->apiKey,
+            
         ]);
 
         if ($response->successful()) {
