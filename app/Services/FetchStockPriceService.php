@@ -3,12 +3,12 @@
 namespace App\Services;
 
 use App\Models\Stock;
-use App\Services\AlphaVantageService;
 use Illuminate\Support\Facades\Log;
 
 class FetchStockPriceService
 {
-    protected $stockSymbols = ["AAPL", "GOOGL", "GOOG", "MSFT", "AMZN", "TSLA", "NVDA", "META", "JPM", "V"];
+    protected $stockSymbols = ['AAPL', 'GOOGL', 'GOOG', 'MSFT', 'AMZN', 'TSLA', 'NVDA', 'META', 'JPM', 'V'];
+
     protected $alphaVantageService;
 
     public function __construct(AlphaVantageService $alphaVantageService)
@@ -24,7 +24,7 @@ class FetchStockPriceService
             }
             Log::info('Stock prices fetching completed successfully.');
         } catch (\Exception $e) {
-            Log::error('Failed to fetch stock prices: ' . $e->getMessage());
+            Log::error('Failed to fetch stock prices: '.$e->getMessage());
         }
     }
 
@@ -43,7 +43,7 @@ class FetchStockPriceService
                 Log::warning("No data returned for symbol: {$symbol}");
             }
         } catch (\Exception $e) {
-            Log::error("Failed to fetch stock price for symbol: {$symbol}. Error: " . $e->getMessage());
+            Log::error("Failed to fetch stock price for symbol: {$symbol}. Error: ".$e->getMessage());
         }
     }
 }
