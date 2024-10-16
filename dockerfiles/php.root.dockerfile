@@ -4,6 +4,7 @@ RUN mkdir -p /var/www/html
 
 WORKDIR /var/www/html
 
+# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 RUN sed -i "s/user = www-data/user = root/g" /usr/local/etc/php-fpm.d/www.conf
@@ -17,11 +18,12 @@ RUN mkdir -p /usr/src/php/ext/redis \
     && echo 'redis' >> /usr/src/php-available-exts \
     && docker-php-ext-install redis
 
+# Copy application files
 COPY . /var/www/html
 
 # Run composer install during the build process
-RUN composer install
+RUN composer install --no-dev --optimize-autoloader
 
 USER root
 
-CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"] 
+CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
