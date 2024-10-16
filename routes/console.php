@@ -1,8 +1,8 @@
 <?php
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+
 use App\Console\Commands\FetchStockPricesCommand;
 use App\Console\Commands\UpdateCacheCommand;
+use Illuminate\Support\Facades\Artisan;
 
 Artisan::command('inspire', function () {
     $this->comment('update:cache');
@@ -16,4 +16,4 @@ Artisan::command('update:cache', function () {
 Artisan::command('fetch:stockprice', function () {
     $command = app(FetchStockPricesCommand::class);
     $command->handle();
-})->purpose('Fetch Stock Price')->days('1');   
+})->purpose('Fetch Stock Price')->days('1');
