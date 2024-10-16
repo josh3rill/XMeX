@@ -22,7 +22,7 @@ This project was initialized with Docker. Follow the steps below to set up and r
 2. **Build and Run Docker Containers**
 
    Navigate to the project root and run the following command:
-
+   copy .env.example to .env if not created during docker build
    ```sh
    docker-compose up --build
    ```
