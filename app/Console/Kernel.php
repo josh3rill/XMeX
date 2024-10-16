@@ -1,5 +1,5 @@
 <?php
-use Illuminate\Support\Facades\Log;
+
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -11,6 +11,7 @@ class Kernel extends ConsoleKernel
         UpdateCacheCommand::class,
 
     ];
+
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('inspire')
