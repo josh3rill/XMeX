@@ -28,7 +28,7 @@ class DemoCommand extends Command
     public function handle()
     {
         // Output a simple message to the log or console
-        \Log::info('Demo command executed at ' . now());
+        \Log::info('Demo command executed at '.now());
 
         // Also print to the console when run manually
         $this->info('Demo command ran successfully!');
