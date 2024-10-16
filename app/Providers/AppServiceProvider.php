@@ -18,13 +18,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(StockRepositoryInterface::class, StockRepository::class);
 
         $this->app->bind('files', function ($app) {
-            return new Filesystem;
+            return new Filesystem();
         });
 
         $this->app->singleton(AlphaVantageService::class, function ($app) {
-            return new AlphaVantageService;
+            return new AlphaVantageService();
         });
-
     }
 
     /**
