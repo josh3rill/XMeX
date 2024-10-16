@@ -16,6 +16,7 @@ class FetchStockPrice implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $symbol;
+
     public function __construct($symbol)
     {
         $this->symbol = $symbol;
