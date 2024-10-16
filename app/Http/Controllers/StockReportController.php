@@ -32,7 +32,7 @@ class StockReportController extends Controller
                     ];
                 }
             } catch (\Exception $e) {
-                Log::error("Failed to fetch data for symbol: {$symbol}. Error: ".$e->getMessage());
+                Log::error("Failed to fetch data for symbol: {$symbol}. Error: " . $e->getMessage());
             }
         }
 
