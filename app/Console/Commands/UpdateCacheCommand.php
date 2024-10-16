@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -8,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 class UpdateCacheCommand extends Command
 {
     protected $signature = 'cache:update';
-    protected $description = 'Update cache from database for predefined symbols';
+    protected $description = 'Update Cache From Database';
 
     public function __construct()
     {
@@ -17,7 +18,7 @@ class UpdateCacheCommand extends Command
 
     public function handle()
     {
-        // TODO: Implement the logic to FETCH $stockSymbols from database
+        // TODO: Implement the logic to FETCH $stockSymbols from database or Json
         $stockSymbols = ["AAPL", "GOOGL", "GOOG", "MSFT", "AMZN", "TSLA", "NVDA", "META", "JPM", "V"];
         
         try {
