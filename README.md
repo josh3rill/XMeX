@@ -23,7 +23,12 @@ This project was initialized with Docker. Follow the steps below to set up and r
 
    Navigate to the project root and run the following command:
    copy .env.example to .env if not created during docker build
+
+
    ```sh
+
+   cp .env.example  .env
+
    docker-compose up --build
    ```
 
