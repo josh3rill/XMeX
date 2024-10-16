@@ -29,7 +29,7 @@ This project was initialized with Docker. Follow the steps below to set up and r
 
    cp .env.example  .env
 
-   docker-compose up --build
+   docker-compose up --build -p
    ```
 
 3. **Access the Docker Container**
