@@ -29,10 +29,10 @@ This project was initialized with Docker. Follow the steps below to set up and r
 
 3. **Access the Docker Container**
 
-   After a successful build, access the Docker container named `EXme`:
+   After a successful build, access the Docker container named `php_XMex`:
 
    ```sh
-   docker exec -it EXme bash
+   docker exec -it php_XMex bash
    ```
 
 4. **Install Composer Dependencies**
