@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\StockController;
+use App\Http\Controllers\Api\v1\StockController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('v1/stocks', [StockController::class, 'index']);
