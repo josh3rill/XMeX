@@ -1,36 +1,30 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
-use App\Http\Controllers\StockReportController;
 use Livewire\Component;
+use App\Services\StockReportService;
 
 class StockReportComponent extends Component
 {
     public $report = [];
+    protected $stockReportService;
 
-    protected $stockController;
-
-    public function __construct()
+    public function mount(StockReportService $stockReportService)
     {
-        $this->stockController = new StockReportController();
-    }
-
-    public function mount()
-    {
+        $this->stockReportService = $stockReportService;
         $this->updateStockData();
     }
 
     public function updateStockData()
     {
-        $this->report = $this->stockController->index()->getData()['report'];
+        $stockSymbols = ['AAPL', 'GOOGL', 'GOOG', 'MSFT', 'AMZN', 'TSLA', 'NVDA', 'META', 'JPM', 'V'];
+        $this->report = $this->stockReportService->generateReport($stockSymbols);
     }
 
     public function render()
     {
-        return view('livewire.stock-report', [
-            'report' => $this->report,
-        ]);
+        return view('livewire.stock-report-component', ['report' => $this->report]);
     }
 
     public function refreshTable()

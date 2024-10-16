@@ -32,12 +32,13 @@ class FetchStockPriceService
     {
         try {
             // Fetch the latest stock data from the database
-            $latestStock = Stock::where('symbol', $symbol)
-                ->orderBy('timestamp', 'desc')
-                ->first();
+            $latestStock = Stock::where('symbol', $symbol)->latest()->first();
 
             // Extract the close price to use as the previous close
             $previousClose = $latestStock ? $latestStock->close : null;
+
+            // Log the previous close value
+            Log::info("Previous close for symbol: {$symbol}", ['previous_close' => $previousClose]);
 
             Log::info("Latest stock data for symbol: {$symbol}", ['latestStock' => $latestStock]);
 
@@ -50,9 +51,9 @@ class FetchStockPriceService
 
                 Log::info("New stock data for symbol: {$symbol}", ['data' => $data]);
 
-                // Ensure the timestamp is unique and update the database
+                // Ensure the symbol is unique and update the database
                 Stock::updateOrCreate(
-                    ['symbol' => $symbol, 'timestamp' => $data['timestamp']],
+                    ['symbol' => $symbol],
                     $data
                 );
 

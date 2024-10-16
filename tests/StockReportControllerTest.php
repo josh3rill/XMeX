@@ -18,6 +18,6 @@ class StockReportController extends Controller
         $stockSymbols = ['AAPL', 'GOOGL', 'GOOG', 'MSFT', 'AMZN', 'TSLA', 'NVDA', 'META', 'JPM', 'V'];
         $report = $this->stockReportService->generateReport($stockSymbols);
 
-        return view('stock_report', ['report' => $report]);
+        return view('stock-report', ['report' => $report]);
     }
 }

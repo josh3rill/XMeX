@@ -36,7 +36,7 @@ class StockReportController extends Controller
             }
         }
 
-        return view('stock_report', ['report' => $report]);
+        return view('stock-report', ['report' => $report]);
     }
 
     private function calculatePercentageChange($current, $previous)

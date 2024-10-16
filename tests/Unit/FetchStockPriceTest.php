@@ -3,10 +3,9 @@
 namespace Tests\Unit;
 
 use App\Jobs\FetchStockPrice;
-use App\Services\AlphaVantageService;
+use App\Services\FetchStockPriceService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Log;
-use Mockery;
 use Tests\TestCase;
 
 class FetchStockPriceTest extends TestCase
@@ -16,75 +15,42 @@ class FetchStockPriceTest extends TestCase
     public function testHandleSuccess()
     {
         $symbol = 'AAPL';
-        $data = [
-            'symbol' => $symbol,
-            'timestamp' => now()->toDateTimeString(),
-            'close' => 150,
-        ];
-
-        $alphaVantageService = Mockery::mock(AlphaVantageService::class);
-        $alphaVantageService->shouldReceive('getStockPrice')
-            ->with($symbol)
-            ->andReturn($data);
+        $fetchStockPriceService = $this->createMock(FetchStockPriceService::class);
+        $fetchStockPriceService->expects($this->once())
+            ->method('fetchStockPrice')
+            ->with($symbol);
 
         $job = new FetchStockPrice($symbol);
-
-        $this->app->instance(AlphaVantageService::class, $alphaVantageService);
-
-        $job->handle($alphaVantageService);
-
-        $this->assertDatabaseHas('stocks', [
-            'symbol' => $symbol,
-            'timestamp' => $data['timestamp'],
-            'close' => $data['close'],
-        ]);
+        $job->handle($fetchStockPriceService);
     }
 
     public function testHandleNoData()
     {
         $symbol = 'AAPL';
-
-        $alphaVantageService = Mockery::mock(AlphaVantageService::class);
-        $alphaVantageService->shouldReceive('getStockPrice')
+        $fetchStockPriceService = $this->createMock(FetchStockPriceService::class);
+        $fetchStockPriceService->expects($this->once())
+            ->method('fetchStockPrice')
             ->with($symbol)
-            ->andReturn(null);
+            ->willReturn(null);
 
         $job = new FetchStockPrice($symbol);
-
-        $this->app->instance(AlphaVantageService::class, $alphaVantageService);
-
-        Log::shouldReceive('warning')
-            ->once()
-            ->with("No data returned for symbol: {$symbol}");
-
-        $job->handle($alphaVantageService);
-
-        $this->assertDatabaseMissing('stocks', [
-            'symbol' => $symbol,
-        ]);
+        $job->handle($fetchStockPriceService);
     }
 
     public function testHandleException()
     {
         $symbol = 'AAPL';
-
-        $alphaVantageService = Mockery::mock(AlphaVantageService::class);
-        $alphaVantageService->shouldReceive('getStockPrice')
+        $fetchStockPriceService = $this->createMock(FetchStockPriceService::class);
+        $fetchStockPriceService->expects($this->once())
+            ->method('fetchStockPrice')
             ->with($symbol)
-            ->andThrow(new \Exception('API error'));
-
-        $job = new FetchStockPrice($symbol);
-
-        $this->app->instance(AlphaVantageService::class, $alphaVantageService);
+            ->willThrowException(new \Exception('Test exception'));
 
         Log::shouldReceive('error')
             ->once()
-            ->with("Failed to fetch stock price for symbol: {$symbol}. Error: API error");
+            ->with("Failed to fetch stock price for symbol: {$symbol}. Error: Test exception");
 
-        $job->handle($alphaVantageService);
-
-        $this->assertDatabaseMissing('stocks', [
-            'symbol' => $symbol,
-        ]);
+        $job = new FetchStockPrice($symbol);
+        $job->handle($fetchStockPriceService);
     }
 }

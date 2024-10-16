@@ -3,11 +3,9 @@
 namespace Tests\Unit;
 
 use App\Jobs\UpdateCacheFromDatabase;
-use App\Models\Stock;
+use App\Services\UpdateCacheService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use Mockery;
 use Tests\TestCase;
 
 class UpdateCacheFromDatabaseTest extends TestCase
@@ -17,54 +15,42 @@ class UpdateCacheFromDatabaseTest extends TestCase
     public function testHandleSuccess()
     {
         $symbol = 'AAPL';
-        $stock = Stock::factory()->create(['symbol' => $symbol, 'close' => 150, 'timestamp' => now()]);
+        $updateCacheService = $this->createMock(UpdateCacheService::class);
+        $updateCacheService->expects($this->once())
+            ->method('updateCache')
+            ->with($symbol);
 
-        $job = new UpdateCacheFromDatabase($symbol);
-
-        Cache::shouldReceive('put')
-            ->once()
-            ->with("stock:{$symbol}", Mockery::on(function ($data) use ($stock) {
-                return $data['symbol'] === $stock->symbol && $data['close'] === $stock->close;
-            }), 60);
-
+        $job = new UpdateCacheFromDatabase($symbol, $updateCacheService);
         $job->handle();
-
-        $this->assertTrue(true); // If no exceptions are thrown, the test passes
     }
 
     public function testHandleNoData()
     {
         $symbol = 'AAPL';
+        $updateCacheService = $this->createMock(UpdateCacheService::class);
+        $updateCacheService->expects($this->once())
+            ->method('updateCache')
+            ->with($symbol)
+            ->willReturn(null);
 
-        $job = new UpdateCacheFromDatabase($symbol);
-
-        Cache::shouldReceive('put')
-            ->never();
-
-        Log::shouldReceive('warning')
-            ->once()
-            ->with("No stock data found for symbol: {$symbol}");
-
+        $job = new UpdateCacheFromDatabase($symbol, $updateCacheService);
         $job->handle();
-
-        $this->assertTrue(true); // If no exceptions are thrown, the test passes
     }
 
     public function testHandleException()
     {
         $symbol = 'AAPL';
-
-        $job = new UpdateCacheFromDatabase($symbol);
-
-        Cache::shouldReceive('put')
-            ->andThrow(new \Exception('Cache error'));
+        $updateCacheService = $this->createMock(UpdateCacheService::class);
+        $updateCacheService->expects($this->once())
+            ->method('updateCache')
+            ->with($symbol)
+            ->willThrowException(new \Exception('Test exception'));
 
         Log::shouldReceive('error')
             ->once()
-            ->with("Failed to update cache for symbol: {$symbol}. Error: Cache error");
+            ->with("Failed to update cache for symbol: {$symbol}. Error: Test exception");
 
+        $job = new UpdateCacheFromDatabase($symbol, $updateCacheService);
         $job->handle();
-
-        $this->assertTrue(true); // If no exceptions are thrown, the test passes
     }
 }

@@ -1,7 +1,5 @@
-<div class="container">
-    <h1 class="mt-5">Real-Time Stock Report</h1>
-    <table class="table table-bordered mt-3">
-        <thead>
+<table>
+    <thead>
         <tr>
             <th>Symbol</th>
             <th>Price</th>
@@ -9,8 +7,8 @@
             <th>Percentage Change</th>
             <th>Timestamp</th>
         </tr>
-        </thead>
-        <tbody>
+    </thead>
+    <tbody>
         @foreach ($report as $stock)
             <tr>
                 <td>{{ $stock['symbol'] }}</td>
@@ -20,6 +18,56 @@
                 <td>{{ $stock['timestamp'] }}</td>
             </tr>
         @endforeach
-        </tbody>
-    </table>
-</div>
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('livewire:load', function () {
+        setInterval(function () {
+            Livewire.emit('refreshStockData');
+        }, 5000); // 20 seconds
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- AAPL -->
