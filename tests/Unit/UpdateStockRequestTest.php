@@ -10,7 +10,7 @@ class UpdateStockRequestTest extends TestCase
 {
     public function testValidationRules()
     {
-        $request = new UpdateStockRequest;
+        $request = new UpdateStockRequest();
 
         $validator = Validator::make([
             'timestamp' => now(),
@@ -27,7 +27,7 @@ class UpdateStockRequestTest extends TestCase
 
     public function testValidationFails()
     {
-        $request = new UpdateStockRequest;
+        $request = new UpdateStockRequest();
 
         $validator = Validator::make([
             'timestamp' => 'invalid-date',
