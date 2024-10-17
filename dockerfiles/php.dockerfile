@@ -37,11 +37,11 @@ RUN mkdir -p /usr/src/php/ext/redis \
     && echo 'redis' >> /usr/src/php-available-exts \
     && docker-php-ext-install redis
 
-
-COPY . /var/www/html   
+COPY . /var/www/html
 COPY startup.sh /usr/local/bin/startup.sh
 RUN chmod +x /usr/local/bin/startup.sh
-    
+
+# Run composer install during the build process
 RUN composer install
 
 USER laravel
